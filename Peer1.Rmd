@@ -1,0 +1,43 @@
+---
+title: "PeerAssessment1"
+author: "putsif"
+date: "Tuesday, May 12, 2015"
+output: html_document
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set( warning=FALSE, message=FALSE)
+```
+
+
+###Loading the data 
+The variables included in this dataset are:
+
+- steps: Number of steps taking in a 5-minute interval (missing values are coded as NA)
+
+- date: The date on which the measurement was taken in YYYY-MM-DD format
+
+- interval: Identifier for the 5-minute interval in which measurement was taken
+
+The dataset is stored in a comma-separated-value (CSV) file and there are a total of 17,568 observations in this dataset. The code for this analysis assumes the dataset is present in the working directory in a file called "activity.csv". 
+
+The data is read in using read.csv, and the date is parsed using lubridate. 
+
+```{r load data}
+library(lubridate)
+data <-read.csv("./data/activity.csv")
+data <- transform(data, date = ymd(as.character(date)))
+
+```
+
+Using the dplyr package, group the data by the date and calculate the total steps taken each day. Then calculate the mean and median of the daily step totals.  
+
+```{r calculate total steps}
+library(dplyr)
+data <- group_by(data, date)
+total_steps <- summarise(data, sum(steps, na.rm = TRUE))
+mean_steps <- mean(total_steps$total_steps)
+median_steps <- median(total_steps$total_steps)
+
+```
+
