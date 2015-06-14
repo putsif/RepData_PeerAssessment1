@@ -1,12 +1,5 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
-```{r global_options, include=FALSE}
-knitr::opts_chunk$set( warning=FALSE, message=FALSE)
-```
+# Reproducible Research: Peer Assessment 1
+
 
 ## Loading and preprocessing the data
 The variables included in this dataset are:
@@ -22,11 +15,11 @@ directory.
 
 The data is read in using read.csv, and the date is parsed using lubridate. 
 
-```{r load data}
+
+```r
 library(lubridate)
 data <-read.csv("./activity/activity.csv")
 data <- transform(data, date = ymd(as.character(date)))
-
 ```
 
 
@@ -35,29 +28,50 @@ data <- transform(data, date = ymd(as.character(date)))
 ## What is mean total number of steps taken per day?
 
 
-```{r mean and median daily steps}
+
+```r
 ## group by day and calculate total steps per day, and the mean and
 ## median of the total steps across all the days.
 library(dplyr)
 data_by_date <- group_by(data, date)
 total_steps <- summarise(data_by_date, total_steps = sum(steps, na.rm = TRUE))
 plot(total_steps, type = "h", xlab = "Date", ylab = "Total Steps")
+```
+
+![](PA1_template_files/figure-html/mean and median daily steps-1.png) 
+
+```r
 mean_steps <- mean(total_steps$total_steps)
 median_steps <- median(total_steps$total_steps)
 print(c("The mean total steps per day is ", mean_steps), quote = FALSE)
-print(c("The median total steps per day is ", median_steps), quote = FALSE)
+```
 
+```
+## [1] The mean total steps per day is  9354.22950819672
+```
+
+```r
+print(c("The median total steps per day is ", median_steps), quote = FALSE)
+```
+
+```
+## [1] The median total steps per day is  10395
 ```
 
 
 ## What is the average daily activity pattern?
-```{r daily activity}
+
+```r
 # group by interval and average the number of steps per interval across the
 # days. 
 data_by_int <- group_by(data, interval)
 interval_avg <- summarise(data_by_int, mean = mean(steps, na.rm = TRUE))
 plot(interval_avg, type = "l", ylab = "Mean steps", xlab = "Interval")
+```
 
+![](PA1_template_files/figure-html/daily activity-1.png) 
+
+```r
 # calculate the average number of steps taken across the days
 # during each interval. Add it to the dataset in a column called 
 # "abisteps", which means average by interval steps. 
@@ -71,16 +85,33 @@ print(c("The interval with the highest average number of steps is ", most_active
       quote = FALSE)
 ```
 
+```
+## [[1]]
+## [1] The interval with the highest average number of steps is 
+## 
+## $interval
+## [1] 835
+```
+
 
 
 
 
 ## Imputing missing values
 
-```{r imputing missing values}
+
+```r
 # calulate and report the number of missing values in the dataset.
 print(c("The number of missing values in the dataset is ",sum(is.na(data$steps))),
         quote = FALSE)
+```
+
+```
+## [1] The number of missing values in the dataset is 
+## [2] 2304
+```
+
+```r
 #create an interpolated dataset where NA values in the steps column
 #are replaced with the average number of steps taken during that interval.
 interpolated_data <- transform(data, steps = ifelse(is.na(steps), 
@@ -95,21 +126,66 @@ plot(total_steps, type = "h", xlab = "Date", ylab = "Total Steps",
      main = "Original Data")
 plot(interpolated_total_steps, type = "h", xlab = "Date", ylab = "Total Steps", 
      main = "Interpolated Data")
+```
+
+![](PA1_template_files/figure-html/imputing missing values-1.png) 
+
+```r
 int_mean_steps <- mean(interpolated_total_steps$total_steps)
 int_median_steps <- median(interpolated_total_steps$total_steps)
 print(c("The mean total steps per day is ", mean_steps), quote = FALSE)
-print(c("The mean total steps per day for the interpolated data is ", 
-        int_mean_steps), quote = FALSE)
-print(c("The difference is ", mean_steps - int_mean_steps), quote = FALSE)
-print(c("The median total steps per day is ", median_steps), quote = FALSE)
-print(c("The median total steps per day for the interpolated data is ", 
-        int_median_steps), quote = FALSE)
-print(c("The difference is ", median_steps - int_median_steps), quote = FALSE)
-
+```
 
 ```
+## [1] The mean total steps per day is  9354.22950819672
+```
+
+```r
+print(c("The mean total steps per day for the interpolated data is ", 
+        int_mean_steps), quote = FALSE)
+```
+
+```
+## [1] The mean total steps per day for the interpolated data is 
+## [2] 10766.1886792453
+```
+
+```r
+print(c("The difference is ", mean_steps - int_mean_steps), quote = FALSE)
+```
+
+```
+## [1] The difference is  -1411.95917104856
+```
+
+```r
+print(c("The median total steps per day is ", median_steps), quote = FALSE)
+```
+
+```
+## [1] The median total steps per day is  10395
+```
+
+```r
+print(c("The median total steps per day for the interpolated data is ", 
+        int_median_steps), quote = FALSE)
+```
+
+```
+## [1] The median total steps per day for the interpolated data is 
+## [2] 10766.1886792453
+```
+
+```r
+print(c("The difference is ", median_steps - int_median_steps), quote = FALSE)
+```
+
+```
+## [1] The difference is  -371.188679245282
+```
 ## Are there differences in activity patterns between weekdays and weekends?
-```{r weekday and weekend patterns}
+
+```r
 ## compare weekday and weekend activity levels.
 ## Add a factor to the interpolated data that labels each reading as "weekday
 ## or "weekend". Group the data by that factor and by interval. Sum the steps.
@@ -124,5 +200,6 @@ wdata_sum <- summarise(wdata_grouped, steps = sum(steps))
 library(lattice)
 p <- xyplot(steps ~ interval | w, wdata_sum, layout = c(1,2), type = "l")
 print(p)
-
 ```
+
+![](PA1_template_files/figure-html/weekday and weekend patterns-1.png) 
