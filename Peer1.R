@@ -1,4 +1,4 @@
-## reade the data and parse the date
+## read the data and parse the date
 library(lubridate)
 data <-read.csv("./activity/activity.csv")
 data <- transform(data, date = ymd(as.character(date)))
@@ -53,9 +53,12 @@ interpolated_data <- select(interpolated_data, steps, date, interval)
 interpolated_by_date <- group_by(interpolated_data, date)
 interpolated_total_steps <- summarise(interpolated_by_date, 
                                       total_steps = sum(steps, na.rm = TRUE))
-histogram(total_steps$total_steps, xlab = "Total Steps, No Interpolation")
-histogram(interpolated_total_steps$total_steps, xlab = "Total Steps, With
-          Interpolation")
+interpolated_total_steps <- mutate(interpolated_total_steps, int = "Interpolated")
+total_steps <- mutate(total_steps, int = "No Interpolation")
+hist_data <- rbind(total_steps, interpolated_total_steps)
+histogram(~ hist_data$total_steps | hist_data$int, xlab = "Total Steps")
+
+
 int_mean_steps <- mean(interpolated_total_steps$total_steps)
 int_median_steps <- median(interpolated_total_steps$total_steps)
 print(c("The mean total steps per day is ", mean_steps), quote = FALSE)

@@ -122,17 +122,13 @@ interpolated_data <- transform(data, steps = ifelse(is.na(steps),
 interpolated_by_date <- group_by(interpolated_data, date)
 interpolated_total_steps <- summarise(interpolated_by_date, 
                                       total_steps = sum(steps, na.rm = TRUE))
-histogram(total_steps$total_steps, xlab = "Total Steps, No Interpolation")
+interpolated_total_steps <- mutate(interpolated_total_steps, int = "Interpolated")
+total_steps <- mutate(total_steps, int = "No Interpolation")
+hist_data <- rbind(total_steps, interpolated_total_steps)
+histogram(~ hist_data$total_steps | hist_data$int, xlab = "Total Steps")
 ```
 
 ![](PA1_template_files/figure-html/imputing missing values-1.png) 
-
-```r
-histogram(interpolated_total_steps$total_steps, xlab = "Total Steps, With
-          Interpolation")
-```
-
-![](PA1_template_files/figure-html/imputing missing values-2.png) 
 
 ```r
 int_mean_steps <- mean(interpolated_total_steps$total_steps)
