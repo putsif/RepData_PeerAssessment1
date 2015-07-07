@@ -33,9 +33,10 @@ data <- transform(data, date = ymd(as.character(date)))
 ## group by day and calculate total steps per day, and the mean and
 ## median of the total steps across all the days.
 library(dplyr)
+library(lattice)
 data_by_date <- group_by(data, date)
 total_steps <- summarise(data_by_date, total_steps = sum(steps, na.rm = TRUE))
-plot(total_steps, type = "h", xlab = "Date", ylab = "Total Steps")
+histogram(total_steps$total_steps, xlab = "Total Steps")
 ```
 
 ![](PA1_template_files/figure-html/mean and median daily steps-1.png) 
@@ -121,14 +122,17 @@ interpolated_data <- transform(data, steps = ifelse(is.na(steps),
 interpolated_by_date <- group_by(interpolated_data, date)
 interpolated_total_steps <- summarise(interpolated_by_date, 
                                       total_steps = sum(steps, na.rm = TRUE))
-par(mfrow = c(1,2))
-plot(total_steps, type = "h", xlab = "Date", ylab = "Total Steps", 
-     main = "Original Data")
-plot(interpolated_total_steps, type = "h", xlab = "Date", ylab = "Total Steps", 
-     main = "Interpolated Data")
+histogram(total_steps$total_steps, xlab = "Total Steps, No Interpolation")
 ```
 
 ![](PA1_template_files/figure-html/imputing missing values-1.png) 
+
+```r
+histogram(interpolated_total_steps$total_steps, xlab = "Total Steps, With
+          Interpolation")
+```
+
+![](PA1_template_files/figure-html/imputing missing values-2.png) 
 
 ```r
 int_mean_steps <- mean(interpolated_total_steps$total_steps)

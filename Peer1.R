@@ -8,9 +8,10 @@ data <- transform(data, date = ymd(as.character(date)))
 # Calculate the mean and median of the total steps across all the days.
 
 library(dplyr)
+library(lattice)
 data_by_date <- group_by(data, date)
 total_steps <- summarise(data_by_date, total_steps = sum(steps, na.rm = TRUE))
-plot(total_steps, type = "h", xlab = "Date", ylab = "Total Steps")
+histogram(total_steps$total_steps, xlab = "Total Steps")
 mean_steps <- mean(total_steps$total_steps)
 median_steps <- median(total_steps$total_steps)
 print(c("The mean total steps per day is ", mean_steps), quote = FALSE)
@@ -52,11 +53,9 @@ interpolated_data <- select(interpolated_data, steps, date, interval)
 interpolated_by_date <- group_by(interpolated_data, date)
 interpolated_total_steps <- summarise(interpolated_by_date, 
                                       total_steps = sum(steps, na.rm = TRUE))
-par(mfrow = c(1,2))
-plot(total_steps, type = "h", xlab = "Date", ylab = "Total Steps", 
-     main = "Original Data")
-plot(interpolated_total_steps, type = "h", xlab = "Date", ylab = "Total Steps", 
-     main = "Interpolated Data")
+histogram(total_steps$total_steps, xlab = "Total Steps, No Interpolation")
+histogram(interpolated_total_steps$total_steps, xlab = "Total Steps, With
+          Interpolation")
 int_mean_steps <- mean(interpolated_total_steps$total_steps)
 int_median_steps <- median(interpolated_total_steps$total_steps)
 print(c("The mean total steps per day is ", mean_steps), quote = FALSE)
@@ -79,6 +78,6 @@ wdata_grouped <- group_by(w_int_data, w, interval)
 wdata_sum <- summarise(wdata_grouped, steps = sum(steps))
 
 ## graph the two subsets using lattice xyplot. 
-library(lattice)
+
 p <- xyplot(steps ~ interval | w, wdata_sum, layout = c(1,2), type = "l")
 print(p)
