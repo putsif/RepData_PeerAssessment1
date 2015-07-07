@@ -6,6 +6,7 @@ output:
 ---
 ```{r global_options, include=FALSE}
 knitr::opts_chunk$set( warning=FALSE, message=FALSE)
+options(scipen = 1, digits = 2)
 ```
 
 ## Loading and preprocessing the data
@@ -32,7 +33,7 @@ data <- transform(data, date = ymd(as.character(date)))
 
 
 
-## What is mean total number of steps taken per day?
+## What is the mean total number of steps taken per day?
 
 
 ```{r mean and median daily steps}
@@ -45,11 +46,10 @@ total_steps <- summarise(data_by_date, total_steps = sum(steps, na.rm = TRUE))
 histogram(total_steps$total_steps, xlab = "Total Steps")
 mean_steps <- mean(total_steps$total_steps)
 median_steps <- median(total_steps$total_steps)
-print(c("The mean total steps per day is ", mean_steps), quote = FALSE)
-print(c("The median total steps per day is ", median_steps), quote = FALSE)
 
 ```
-
+The mean daily step total is `r mean_steps`.
+The median daily step total is `r median_steps`.
 
 ## What is the average daily activity pattern?
 ```{r daily activity}
@@ -68,20 +68,22 @@ data <- transform(data, abisteps = ave(data$steps, interval,
                                        FUN = function(x) mean (x, na.rm = TRUE)))
 most_active <- interval_avg[which(interval_avg$mean == 
                                     max(interval_avg$mean)),1]
-print(c("The interval with the highest average number of steps is ", most_active),
-      quote = FALSE)
+
 ```
 
-
+The interval with the highest average number of steps is `r most_active`.
 
 
 
 ## Imputing missing values
 
-```{r imputing missing values}
+```{r report number of missing values}
 # calulate and report the number of missing values in the dataset.
-print(c("The number of missing values in the dataset is ",sum(is.na(data$steps))),
-        quote = FALSE)
+number_missing <- sum(is.na(data$steps))
+```
+There are `r number_missing` missing values. 
+
+```{r impute missing values}
 #create an interpolated dataset where NA values in the steps column
 #are replaced with the average number of steps taken during that interval.
 interpolated_data <- transform(data, steps = ifelse(is.na(steps), 
@@ -98,17 +100,20 @@ histogram(~ hist_data$total_steps | hist_data$int, xlab = "Total Steps")
 
 int_mean_steps <- mean(interpolated_total_steps$total_steps)
 int_median_steps <- median(interpolated_total_steps$total_steps)
-print(c("The mean total steps per day is ", mean_steps), quote = FALSE)
-print(c("The mean total steps per day for the interpolated data is ", 
-        int_mean_steps), quote = FALSE)
-print(c("The difference is ", mean_steps - int_mean_steps), quote = FALSE)
-print(c("The median total steps per day is ", median_steps), quote = FALSE)
-print(c("The median total steps per day for the interpolated data is ", 
-        int_median_steps), quote = FALSE)
-print(c("The difference is ", median_steps - int_median_steps), quote = FALSE)
 
 
 ```
+
+The mean total steps per day before interpolation was `r mean_steps`.
+The mean total steps per day for the interpolated data was `r int_mean_steps`.
+
+The difference is `r mean_steps - int_mean_steps`
+
+The median total steps per day before interpolation was `r median_steps`.
+The median total steps per day for the interpolated data was `r int_median_steps`.
+
+The difference was `r median_steps - int_median_steps`.
+
 ## Are there differences in activity patterns between weekdays and weekends?
 ```{r weekday and weekend patterns}
 ## compare weekday and weekend activity levels.
@@ -127,3 +132,6 @@ p <- xyplot(steps ~ interval | w, wdata_sum, layout = c(1,2), type = "l")
 print(p)
 
 ```
+
+
+There were clear differences in the activity levels. Participants were generally more active on weekdays, with the most activity occurring on weekday mornings. 

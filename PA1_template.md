@@ -44,21 +44,9 @@ histogram(total_steps$total_steps, xlab = "Total Steps")
 ```r
 mean_steps <- mean(total_steps$total_steps)
 median_steps <- median(total_steps$total_steps)
-print(c("The mean total steps per day is ", mean_steps), quote = FALSE)
 ```
-
-```
-## [1] The mean total steps per day is  9354.22950819672
-```
-
-```r
-print(c("The median total steps per day is ", median_steps), quote = FALSE)
-```
-
-```
-## [1] The median total steps per day is  10395
-```
-
+The mean daily step total is 9354.23.
+The median daily step total is 10395.
 
 ## What is the average daily activity pattern?
 
@@ -82,19 +70,9 @@ data <- transform(data, abisteps = ave(data$steps, interval,
                                        FUN = function(x) mean (x, na.rm = TRUE)))
 most_active <- interval_avg[which(interval_avg$mean == 
                                     max(interval_avg$mean)),1]
-print(c("The interval with the highest average number of steps is ", most_active),
-      quote = FALSE)
 ```
 
-```
-## [[1]]
-## [1] The interval with the highest average number of steps is 
-## 
-## $interval
-## [1] 835
-```
-
-
+The interval with the highest average number of steps is 835.
 
 
 
@@ -103,14 +81,10 @@ print(c("The interval with the highest average number of steps is ", most_active
 
 ```r
 # calulate and report the number of missing values in the dataset.
-print(c("The number of missing values in the dataset is ",sum(is.na(data$steps))),
-        quote = FALSE)
+number_missing <- sum(is.na(data$steps))
 ```
+There are 2304 missing values. 
 
-```
-## [1] The number of missing values in the dataset is 
-## [2] 2304
-```
 
 ```r
 #create an interpolated dataset where NA values in the steps column
@@ -128,61 +102,23 @@ hist_data <- rbind(total_steps, interpolated_total_steps)
 histogram(~ hist_data$total_steps | hist_data$int, xlab = "Total Steps")
 ```
 
-![](PA1_template_files/figure-html/imputing missing values-1.png) 
+![](PA1_template_files/figure-html/impute missing values-1.png) 
 
 ```r
 int_mean_steps <- mean(interpolated_total_steps$total_steps)
 int_median_steps <- median(interpolated_total_steps$total_steps)
-print(c("The mean total steps per day is ", mean_steps), quote = FALSE)
 ```
 
-```
-## [1] The mean total steps per day is  9354.22950819672
-```
+The mean total steps per day before interpolation was 9354.23.
+The mean total steps per day for the interpolated data was 10766.19.
 
-```r
-print(c("The mean total steps per day for the interpolated data is ", 
-        int_mean_steps), quote = FALSE)
-```
+The difference is -1411.96
 
-```
-## [1] The mean total steps per day for the interpolated data is 
-## [2] 10766.1886792453
-```
+The median total steps per daybefore interpolation was 10395.
+The median total steps per day for the interpolated data was 10766.19.
 
-```r
-print(c("The difference is ", mean_steps - int_mean_steps), quote = FALSE)
-```
+The difference was -371.19.
 
-```
-## [1] The difference is  -1411.95917104856
-```
-
-```r
-print(c("The median total steps per day is ", median_steps), quote = FALSE)
-```
-
-```
-## [1] The median total steps per day is  10395
-```
-
-```r
-print(c("The median total steps per day for the interpolated data is ", 
-        int_median_steps), quote = FALSE)
-```
-
-```
-## [1] The median total steps per day for the interpolated data is 
-## [2] 10766.1886792453
-```
-
-```r
-print(c("The difference is ", median_steps - int_median_steps), quote = FALSE)
-```
-
-```
-## [1] The difference is  -371.188679245282
-```
 ## Are there differences in activity patterns between weekdays and weekends?
 
 ```r
@@ -203,3 +139,6 @@ print(p)
 ```
 
 ![](PA1_template_files/figure-html/weekday and weekend patterns-1.png) 
+
+
+There were clear differences in the activity levels. Participants were generally more active on weekdays, with the most activity occurring on weekday mornings. 
