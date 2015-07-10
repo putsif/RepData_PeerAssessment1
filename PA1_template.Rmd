@@ -5,7 +5,7 @@ output:
     keep_md: true
 ---
 ```{r global_options, include=FALSE}
-knitr::opts_chunk$set( warning=FALSE, message=FALSE)
+knitr::opts_chunk$set( warning=FALSE, message=FALSE, fig.path = "figure/")
 options(scipen = 1, digits = 2)
 ```
 

@@ -39,7 +39,7 @@ total_steps <- summarise(data_by_date, total_steps = sum(steps, na.rm = TRUE))
 histogram(total_steps$total_steps, xlab = "Total Steps")
 ```
 
-![](PA1_template_files/figure-html/total steps histogram mean and median daily steps-1.png) 
+![](figure/total steps histogram mean and median daily steps-1.png) 
 
 ```r
 mean_steps <- mean(total_steps$total_steps)
@@ -58,7 +58,7 @@ interval_avg <- summarise(data_by_int, mean = mean(steps, na.rm = TRUE))
 plot(interval_avg, type = "l", ylab = "Mean steps", xlab = "Interval")
 ```
 
-![](PA1_template_files/figure-html/daily activity-1.png) 
+![](figure/daily activity-1.png) 
 
 ```r
 # calculate the average number of steps taken across the days
@@ -102,7 +102,7 @@ hist_data <- rbind(total_steps, interpolated_total_steps)
 histogram(~ hist_data$total_steps | hist_data$int, xlab = "Total Steps")
 ```
 
-![](PA1_template_files/figure-html/histograms of total steps with and without interpolation-1.png) 
+![](figure/histograms of total steps with and without interpolation-1.png) 
 
 ```r
 int_mean_steps <- mean(interpolated_total_steps$total_steps)
@@ -138,7 +138,7 @@ p <- xyplot(steps ~ interval | w, wdata_sum, layout = c(1,2), type = "l")
 print(p)
 ```
 
-![](PA1_template_files/figure-html/weekday and weekend patterns-1.png) 
+![](figure/weekday and weekend patterns-1.png) 
 
 
 There were clear differences in the activity levels. Participants were generally more active on weekdays, with the most activity occurring on weekday mornings. 
