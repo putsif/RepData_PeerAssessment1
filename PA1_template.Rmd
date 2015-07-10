@@ -36,7 +36,7 @@ data <- transform(data, date = ymd(as.character(date)))
 ## What is the mean total number of steps taken per day?
 
 
-```{r mean and median daily steps}
+```{r total steps histogram mean and median daily steps}
 ## group by day and calculate total steps per day, and the mean and
 ## median of the total steps across all the days.
 library(dplyr)
@@ -83,7 +83,7 @@ number_missing <- sum(is.na(data$steps))
 ```
 There are `r number_missing` missing values. 
 
-```{r impute missing values}
+```{r histograms of total steps with and without interpolation}
 #create an interpolated dataset where NA values in the steps column
 #are replaced with the average number of steps taken during that interval.
 interpolated_data <- transform(data, steps = ifelse(is.na(steps), 

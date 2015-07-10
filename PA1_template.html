@@ -78,8 +78,8 @@ img {
 data &lt;-read.csv(&quot;./activity/activity.csv&quot;)
 data &lt;- transform(data, date = ymd(as.character(date)))</code></pre>
 </div>
-<div id="what-is-mean-total-number-of-steps-taken-per-day" class="section level2">
-<h2>What is mean total number of steps taken per day?</h2>
+<div id="what-is-the-mean-total-number-of-steps-taken-per-day" class="section level2">
+<h2>What is the mean total number of steps taken per day?</h2>
 <pre class="r"><code>## group by day and calculate total steps per day, and the mean and
 ## median of the total steps across all the days.
 library(dplyr)
@@ -134,7 +134,7 @@ histogram(~ hist_data$total_steps | hist_data$int, xlab = &quot;Total Steps&quot
 int_median_steps &lt;- median(interpolated_total_steps$total_steps)</code></pre>
 <p>The mean total steps per day before interpolation was 9354.23. The mean total steps per day for the interpolated data was 10766.19.</p>
 <p>The difference is -1411.96</p>
-<p>The median total steps per daybefore interpolation was 10395. The median total steps per day for the interpolated data was 10766.19.</p>
+<p>The median total steps per day before interpolation was 10395. The median total steps per day for the interpolated data was 10766.19.</p>
 <p>The difference was -371.19.</p>
 </div>
 <div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level2">

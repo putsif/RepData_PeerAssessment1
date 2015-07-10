@@ -25,7 +25,7 @@ data <- transform(data, date = ymd(as.character(date)))
 
 
 
-## What is mean total number of steps taken per day?
+## What is the mean total number of steps taken per day?
 
 
 
@@ -39,7 +39,7 @@ total_steps <- summarise(data_by_date, total_steps = sum(steps, na.rm = TRUE))
 histogram(total_steps$total_steps, xlab = "Total Steps")
 ```
 
-![](PA1_template_files/figure-html/mean and median daily steps-1.png) 
+![](PA1_template_files/figure-html/total steps histogram mean and median daily steps-1.png) 
 
 ```r
 mean_steps <- mean(total_steps$total_steps)
@@ -102,7 +102,7 @@ hist_data <- rbind(total_steps, interpolated_total_steps)
 histogram(~ hist_data$total_steps | hist_data$int, xlab = "Total Steps")
 ```
 
-![](PA1_template_files/figure-html/impute missing values-1.png) 
+![](PA1_template_files/figure-html/histograms of total steps with and without interpolation-1.png) 
 
 ```r
 int_mean_steps <- mean(interpolated_total_steps$total_steps)
@@ -114,7 +114,7 @@ The mean total steps per day for the interpolated data was 10766.19.
 
 The difference is -1411.96
 
-The median total steps per daybefore interpolation was 10395.
+The median total steps per day before interpolation was 10395.
 The median total steps per day for the interpolated data was 10766.19.
 
 The difference was -371.19.
