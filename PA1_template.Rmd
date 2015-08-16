@@ -124,14 +124,15 @@ w_int_data <- transform(interpolated_data,
                         w = as.factor(ifelse(wday(date)== 7 | wday(date)== 1,
                                              "weekend", "weekday")))
 wdata_grouped <- group_by(w_int_data, w, interval)
-wdata_sum <- summarise(wdata_grouped, steps = sum(steps))
+wdata_avg <- summarise(wdata_grouped, steps = mean(steps, na.rm = TRUE))
 
 ## graph the two subsets using lattice xyplot. 
 library(lattice)
-p <- xyplot(steps ~ interval | w, wdata_sum, layout = c(1,2), type = "l")
+p <- xyplot(steps ~ interval | w, wdata_avg, layout = c(1,2), type = "l")
 print(p)
 
 ```
 
 
-There were clear differences in the activity levels. Participants were generally more active on weekdays, with the most activity occurring on weekday mornings. 
+There were clear differences in the activity levels. Participants were generally more active on weekends, but the activity was spread more evenly throughout
+the day. On weekdays, activity was concentrated in the morning.  

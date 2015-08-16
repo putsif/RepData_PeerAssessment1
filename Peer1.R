@@ -78,7 +78,7 @@ w_int_data <- transform(interpolated_data,
                         w = as.factor(ifelse(wday(date)== 7 | wday(date)== 1,
                                              "weekend", "weekday")))
 wdata_grouped <- group_by(w_int_data, w, interval)
-wdata_sum <- summarise(wdata_grouped, steps = sum(steps))
+wdata_sum <- summarise(wdata_grouped, steps = mean(steps, na.rm = TRUE))
 
 ## graph the two subsets using lattice xyplot. 
 
